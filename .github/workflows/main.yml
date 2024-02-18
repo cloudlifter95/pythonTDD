@@ -32,7 +32,7 @@ jobs:
       - name: Install app dependencies
         run: |
           pwd
-          pipenv install
+          pipenv install --python ${{ matrix.python-version }}
       - name: Test with pytest
         run: |
           pwd
