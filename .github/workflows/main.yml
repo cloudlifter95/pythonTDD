@@ -3,7 +3,7 @@ name: Python package
 on: [push]
 
 jobs:
-  build:
+  job1:
     defaults:
       run:
         working-directory: ${{ github.workspace }}
@@ -24,13 +24,15 @@ jobs:
       # Install pip and pytest
       - name: Install dependencies
         run: |
+          echo ${{ github.workspace }}
+          pwd
           python -m pip install --upgrade pip
           pip install pytest
           pip install numpy
           pip install pipenv
       - name: Install app dependencies
         run: |
-          cd ../..
+          cd ../.. && pwd
           pipenv install
       - name: Test with pytest
         run: |
