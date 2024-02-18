@@ -1,0 +1,48 @@
+name: Python package
+
+on: [push]
+
+jobs:
+  job1:
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ github.workspace }}
+
+    timeout-minutes: 10
+    runs-on: ${{ matrix.os }}
+    strategy:
+      # fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.10", "3.11"]
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python # Set Python version
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      # Install pip and pytest
+      - name: Install dependencies
+        run: |
+          echo "working directory set to: ${{ github.workspace }}"
+          python -m pip install --upgrade pip
+          pip install pytest
+          pip install numpy
+          pip install pipenv
+      - name: Install app dependencies
+        run: |
+          pwd
+          pipenv install --python ${{ matrix.python-version }}
+      - name: Test with pytest
+        run: |
+          pwd
+          pytest ./ --doctest-modules --junitxml=junit/test-results-${{ matrix.os }}-${{ matrix.python-version }}.xml
+      - name: Upload pytest test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: pytest-results-${{ matrix.os }}-${{ matrix.python-version }}
+          path: junit/test-results-${{ matrix.os }}-${{ matrix.python-version }}.xml
+        # Use always() to always run this step to publish test results when there are test failures
+        if: ${{ always() }}
