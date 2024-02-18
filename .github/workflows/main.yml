@@ -6,14 +6,15 @@ jobs:
   job1:
     defaults:
       run:
+        shell: bash
         working-directory: ${{ github.workspace }}
+
     timeout-minutes: 10
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        # os: [ubuntu-latest]
-        python-version: ["3.8"]
+        python-version: ["3.10", "3.11"]
 
     steps:
       - uses: actions/checkout@v4
