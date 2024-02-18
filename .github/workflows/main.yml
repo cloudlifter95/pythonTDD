@@ -25,11 +25,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install pytest
           pip install numpy
-          # pip install pipenv
-          # pipenv install
-      - name: Test with pytest
+          pip install pipenv
+      - name: Install app dependencies
         run: |
           cd ../..
+          pipenv install
+      - name: Test with pytest
+        run: |
+          pwd
+          cd ../..
+          pwd
           pytest ./ --doctest-modules --junitxml=junit/test-results-${{ matrix.python-version }}.xml
       - name: Upload pytest test results
         uses: actions/upload-artifact@v3
