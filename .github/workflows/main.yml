@@ -24,15 +24,14 @@ jobs:
       # Install pip and pytest
       - name: Install dependencies
         run: |
-          echo ${{ github.workspace }}
-          pwd
+          echo "working directory set to: ${{ github.workspace }}"
           python -m pip install --upgrade pip
           pip install pytest
           pip install numpy
           pip install pipenv
       - name: Install app dependencies
         run: |
-          cd ../.. && pwd
+          pwd
           pipenv install
       - name: Test with pytest
         run: |
